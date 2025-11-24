@@ -268,7 +268,7 @@ const GrowthSimulator = () => {
         <div style="text-align: center; margin-top: 50px;">
             <p style="color:#334155;">Our engineering team has received this snapshot.</p>
             <p style="color:#334155;">We will contact you at <strong>${formData.phone}</strong> to verify these numbers.</p>
-            <a href="https://frayze.ca" class="cta-btn">Book Deployment Call</a>
+            <a href="https://frayze.ca/book-consultation/" class="cta-btn">Book Deployment Call</a>
         </div>
 
         <div class="footer">
@@ -538,6 +538,87 @@ const GrowthSimulator = () => {
         );
     };
 
+    // --- NEW: Wow Factor Components ---
+
+    const LostRevenueTicker = ({ annualGrowth }) => {
+        const [lost, setLost] = useState(0);
+
+        useEffect(() => {
+            // Reset when growth changes significantly or just keep ticking?
+            // Let's just keep ticking from 0 to show "current session loss"
+            setLost(0);
+        }, [annualGrowth]);
+
+        useEffect(() => {
+            if (annualGrowth <= 0) return;
+
+            // Calculate dollars per second
+            const perSecond = annualGrowth / (365 * 24 * 60 * 60);
+            const interval = setInterval(() => {
+                setLost(prev => prev + (perSecond / 10)); // Update every 100ms
+            }, 100);
+
+            return () => clearInterval(interval);
+        }, [annualGrowth]);
+
+        if (annualGrowth <= 0) return null;
+
+        return (
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 flex items-center justify-between animate-in fade-in slide-in-from-top-4 duration-700 shadow-sm relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-10">
+                    <DollarSign size={64} className="text-amber-500 rotate-12" />
+                </div>
+                <div className="flex items-center gap-4 relative z-10">
+                    <div className="p-2 bg-amber-100 text-amber-600 rounded-lg animate-pulse">
+                        <Activity size={20} />
+                    </div>
+                    <div>
+                        <h4 className="text-sm font-bold text-amber-900 uppercase tracking-wide flex items-center gap-2">
+                            Revenue Leaking
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-medium bg-amber-100 text-amber-800">
+                                LIVE
+                            </span>
+                        </h4>
+                        <p className="text-xs text-amber-700 font-medium">Money left on the table during this session.</p>
+                    </div>
+                </div>
+                <div className="text-2xl font-mono font-black text-amber-600 tracking-tight relative z-10">
+                    ${lost.toFixed(4)}
+                </div>
+            </div>
+        );
+    };
+
+    const GrowthScoreGauge = ({ toggles }) => {
+        const activeCount = Object.values(toggles).filter(Boolean).length;
+        const score = Math.round((activeCount / 3) * 100);
+
+        // Color logic
+        let colorClass = 'text-red-500';
+        let borderClass = 'border-red-100';
+        if (score >= 40) { colorClass = 'text-amber-500'; borderClass = 'border-amber-100'; }
+        if (score >= 70) { colorClass = 'text-emerald-500'; borderClass = 'border-emerald-100'; }
+
+        return (
+            <div className="absolute top-6 right-6 flex flex-col items-center z-20 bg-white/50 backdrop-blur-sm p-2 rounded-2xl border border-slate-100 shadow-sm">
+                <div className={`relative w-14 h-14 flex items-center justify-center rounded-full border-4 ${borderClass}`}>
+                    <svg className="absolute inset-0 w-full h-full -rotate-90 transform" viewBox="0 0 36 36">
+                        <path
+                            className={`${colorClass} transition-all duration-1000 ease-out`}
+                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            strokeDasharray={`${score}, 100`}
+                        />
+                    </svg>
+                    <span className={`text-xs font-black ${colorClass}`}>{score}</span>
+                </div>
+                <span className="text-[9px] font-bold text-slate-400 uppercase mt-1 tracking-wider">Score</span>
+            </div>
+        );
+    };
+
     return (
         <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-cyan-100 overflow-x-hidden relative">
 
@@ -682,7 +763,6 @@ const GrowthSimulator = () => {
                                 {terminalLogs.map((log) => (
                                     <div key={log.id} className={`${log.type === 'success' ? 'text-emerald-400' : log.type === 'warning' ? 'text-amber-400' : 'text-slate-400'}`}>
                                         <span className="opacity-50 mr-2">[{new Date(log.id.toString().includes('init') ? Date.now() : log.id).toLocaleTimeString().split(' ')[0]}]</span>
-                                        {log.type === 'success' && '>> '}
                                         {log.text}
                                     </div>
                                 ))}
@@ -695,8 +775,14 @@ const GrowthSimulator = () => {
                     {/* --- Right Column: Visualizer --- */}
                     <div className="lg:col-span-8 flex flex-col h-full gap-6">
 
+                        {/* NEW: Lost Revenue Ticker */}
+                        <LostRevenueTicker annualGrowth={annualGrowth} />
+
                         {/* Main Dashboard Card */}
                         <div className="flex-1 bg-white rounded-3xl border border-slate-200 p-8 shadow-xl relative overflow-hidden flex flex-col">
+
+                            {/* NEW: Growth Score Gauge */}
+                            <GrowthScoreGauge toggles={toggles} />
 
                             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 border-b border-slate-100 pb-6">
                                 <div>
