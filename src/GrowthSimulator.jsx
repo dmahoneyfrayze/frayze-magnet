@@ -22,7 +22,9 @@ import {
     FileText,
     HelpCircle,
     Scan,
-    Calendar
+    Calendar,
+    ToggleLeft,
+    ToggleRight
 } from 'lucide-react';
 
 const ResultPreview = ({ onComplete }) => {
@@ -480,21 +482,35 @@ const GrowthSimulator = ({ isEmbed = false }) => {
                 className={`relative cursor-pointer group rounded-xl border p-4 transition-all duration-300 ease-out overflow-hidden backdrop-blur-sm
         ${active
                         ? `bg-${colorClass}-50 border-${colorClass}-500/50 shadow-[0_0_20px_rgba(6,182,212,0.15)]`
-                        : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                        : 'bg-white border-slate-200 hover:border-slate-400 hover:bg-slate-50 hover:shadow-md'
                     }`}
             >
                 <div className="flex items-start gap-4 relative z-10">
-                    <div className={`p-3 rounded-lg transition-colors duration-300 ${active ? `bg-${colorClass}-100 text-${colorClass}-700` : 'bg-slate-100 text-slate-500'}`}>
+                    <div className={`p-3 rounded-lg transition-colors duration-300 ${active ? `bg-${colorClass}-100 text-${colorClass}-700` : 'bg-slate-100 text-slate-400 group-hover:bg-slate-200 group-hover:text-slate-600'}`}>
                         <Icon size={22} strokeWidth={2} />
                     </div>
-                    <div>
-                        <h3 className={`font-bold text-base ${active ? 'text-slate-900' : 'text-slate-600'}`}>{title}</h3>
+                    <div className="flex-1">
+                        <div className="flex justify-between items-start">
+                            <h3 className={`font-bold text-base ${active ? 'text-slate-900' : 'text-slate-600 group-hover:text-slate-900'}`}>{title}</h3>
+                            {active ? (
+                                <ToggleRight size={24} className={`text-${colorClass}-500 transition-all`} />
+                            ) : (
+                                <ToggleLeft size={24} className="text-slate-300 group-hover:text-slate-400 transition-all" />
+                            )}
+                        </div>
                         <p className="text-xs text-slate-500 mt-1 leading-relaxed max-w-[200px]">{description}</p>
+
+                        {!active && (
+                            <div className="mt-2 text-[10px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-cyan-600 transition-colors flex items-center gap-1">
+                                <div className="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-cyan-500"></div>
+                                Tap to Activate
+                            </div>
+                        )}
                     </div>
                 </div>
 
                 {/* Impact Badge */}
-                <div className={`absolute top-4 right-4 text-xs font-bold px-2 py-1 rounded border transition-all duration-500
+                <div className={`absolute top-12 right-4 text-xs font-bold px-2 py-1 rounded border transition-all duration-500
         ${active
                         ? `bg-${colorClass}-100 text-${colorClass}-700 border-${colorClass}-200 translate-y-0 opacity-100`
                         : 'opacity-0 -translate-y-2'}`}>
