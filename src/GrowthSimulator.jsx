@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Zap,
     Bot,
@@ -472,39 +472,42 @@ const GrowthSimulator = ({ isEmbed = false }) => {
 
     // --- Components ---
 
-    const ToggleCard = ({ icon: Icon, title, description, active, onClick, impactText, colorClass = "cyan" }) => (
-        <div
-            onClick={onClick}
-            className={`relative cursor-pointer group rounded-xl border p-4 transition-all duration-300 ease-out overflow-hidden backdrop-blur-sm
+    const ToggleCard = ({ icon, title, description, active, onClick, impactText, colorClass = "cyan" }) => {
+        const Icon = icon;
+        return (
+            <div
+                onClick={onClick}
+                className={`relative cursor-pointer group rounded-xl border p-4 transition-all duration-300 ease-out overflow-hidden backdrop-blur-sm
         ${active
-                    ? `bg-${colorClass}-50 border-${colorClass}-500/50 shadow-[0_0_20px_rgba(6,182,212,0.15)]`
-                    : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50'
-                }`}
-        >
-            <div className="flex items-start gap-4 relative z-10">
-                <div className={`p-3 rounded-lg transition-colors duration-300 ${active ? `bg-${colorClass}-100 text-${colorClass}-700` : 'bg-slate-100 text-slate-500'}`}>
-                    <Icon size={22} strokeWidth={2} />
+                        ? `bg-${colorClass}-50 border-${colorClass}-500/50 shadow-[0_0_20px_rgba(6,182,212,0.15)]`
+                        : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                    }`}
+            >
+                <div className="flex items-start gap-4 relative z-10">
+                    <div className={`p-3 rounded-lg transition-colors duration-300 ${active ? `bg-${colorClass}-100 text-${colorClass}-700` : 'bg-slate-100 text-slate-500'}`}>
+                        <Icon size={22} strokeWidth={2} />
+                    </div>
+                    <div>
+                        <h3 className={`font-bold text-base ${active ? 'text-slate-900' : 'text-slate-600'}`}>{title}</h3>
+                        <p className="text-xs text-slate-500 mt-1 leading-relaxed max-w-[200px]">{description}</p>
+                    </div>
                 </div>
-                <div>
-                    <h3 className={`font-bold text-base ${active ? 'text-slate-900' : 'text-slate-600'}`}>{title}</h3>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed max-w-[200px]">{description}</p>
-                </div>
-            </div>
 
-            {/* Impact Badge */}
-            <div className={`absolute top-4 right-4 text-xs font-bold px-2 py-1 rounded border transition-all duration-500
+                {/* Impact Badge */}
+                <div className={`absolute top-4 right-4 text-xs font-bold px-2 py-1 rounded border transition-all duration-500
         ${active
-                    ? `bg-${colorClass}-100 text-${colorClass}-700 border-${colorClass}-200 translate-y-0 opacity-100`
-                    : 'opacity-0 -translate-y-2'}`}>
-                {impactText}
-            </div>
+                        ? `bg-${colorClass}-100 text-${colorClass}-700 border-${colorClass}-200 translate-y-0 opacity-100`
+                        : 'opacity-0 -translate-y-2'}`}>
+                    {impactText}
+                </div>
 
-            {/* Animated Gradient Border */}
-            {active && (
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-slate-400/10 to-transparent skew-x-12 animate-shimmer pointer-events-none" />
-            )}
-        </div>
-    );
+                {/* Animated Gradient Border */}
+                {active && (
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-slate-400/10 to-transparent skew-x-12 animate-shimmer pointer-events-none" />
+                )}
+            </div>
+        );
+    };
 
     const StatDisplay = ({ label, value, subValue, type = "neutral" }) => {
         const isPositive = type === "positive";
