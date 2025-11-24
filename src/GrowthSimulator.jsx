@@ -670,13 +670,13 @@ const GrowthSimulator = ({ isEmbed = false }) => {
                             <Cpu size={14} />
                             <span className="tracking-wide">ENGINEERING GROWTH SYSTEMS</span>
                         </div>
-                        <h1 className="text-5xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight leading-tight">
+                        <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight leading-tight">
                             Simulate Your <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600">
                                 Revenue Potential
                             </span>
                         </h1>
-                        <p className="text-slate-600 text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed">
+                        <p className="text-base md:text-xl max-w-2xl mx-auto font-light leading-relaxed">
                             Don't guess. Engineer it. Configure your automation stack below and visualize the mathematical impact of Frayze systems on your bottom line.
                         </p>
                     </div>
@@ -786,26 +786,26 @@ const GrowthSimulator = ({ isEmbed = false }) => {
                         <LostRevenueTicker annualGrowth={annualGrowth} />
 
                         {/* Main Dashboard Card */}
-                        <div className="flex-1 bg-white rounded-3xl border border-slate-200 p-8 shadow-xl relative overflow-hidden flex flex-col">
+                        <div className="flex-1 bg-white rounded-3xl border border-slate-200 p-4 md:p-8 shadow-xl relative overflow-hidden flex flex-col">
 
                             {/* NEW: Growth Score Gauge */}
                             <GrowthScoreGauge toggles={toggles} />
 
                             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 border-b border-slate-100 pb-6">
                                 <div>
-                                    <h3 className="text-xl font-bold text-slate-900 mb-1">Projected Annual Impact</h3>
+                                    <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-1">Projected Annual Impact</h3>
                                     <p className="text-sm text-slate-500">Based on system configuration</p>
                                 </div>
                                 <div className="mt-4 md:mt-0 text-right">
                                     <p className="text-xs uppercase tracking-widest text-slate-400 font-bold mb-1">Additional Annual Revenue</p>
-                                    <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-cyan-600">
+                                    <div className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-cyan-600">
                                         +${Math.max(0, annualGrowth).toLocaleString()}
                                     </div>
                                 </div>
                             </div>
 
                             {/* The Graph */}
-                            <div className="flex-1 min-h-[250px] relative">
+                            <div className="flex-1 min-h-[200px] md:min-h-[250px] relative">
                                 <ComparisonGraph />
 
                                 {/* Floating Badges on Graph */}
