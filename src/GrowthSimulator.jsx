@@ -23,7 +23,7 @@ import {
     HelpCircle
 } from 'lucide-react';
 
-const GrowthSimulator = () => {
+const GrowthSimulator = ({ isEmbed = false }) => {
     // --- State ---
     const [inputs, setInputs] = useState({
         monthlyTraffic: 1000,
@@ -620,14 +620,16 @@ const GrowthSimulator = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-cyan-100 overflow-x-hidden relative">
+        <div className={`min-h-screen font-sans selection:bg-cyan-100 overflow-x-hidden relative ${isEmbed ? 'bg-transparent' : 'bg-slate-50'}`}>
 
-            {/* --- Ambient Background Effects --- */}
-            <div className="fixed inset-0 pointer-events-none">
-                <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-purple-100/50 rounded-full blur-[120px] mix-blend-multiply" />
-                <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-cyan-100/50 rounded-full blur-[120px] mix-blend-multiply" />
-                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03]" />
-            </div>
+            {/* --- Ambient Background Effects (Hidden in Embed) --- */}
+            {!isEmbed && (
+                <div className="fixed inset-0 pointer-events-none">
+                    <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-purple-100/50 rounded-full blur-[120px] mix-blend-multiply" />
+                    <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-cyan-100/50 rounded-full blur-[120px] mix-blend-multiply" />
+                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03]" />
+                </div>
+            )}
 
             <style>{`
         @keyframes shimmer {
@@ -639,42 +641,46 @@ const GrowthSimulator = () => {
         }
       `}</style>
 
-            {/* --- Header --- */}
-            <header className="border-b border-slate-200 bg-white/80 sticky top-0 z-50 backdrop-blur-xl">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-purple-600 rounded flex items-center justify-center text-white font-bold shadow-md">
-                            F
+            {/* --- Header (Hidden in Embed) --- */}
+            {!isEmbed && (
+                <header className="border-b border-slate-200 bg-white/80 sticky top-0 z-50 backdrop-blur-xl">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-purple-600 rounded flex items-center justify-center text-white font-bold shadow-md">
+                                F
+                            </div>
+                            <span className="text-xl font-bold tracking-tight text-slate-900 font-mono">frayze<span className="text-cyan-600">.ca</span></span>
                         </div>
-                        <span className="text-xl font-bold tracking-tight text-slate-900 font-mono">frayze<span className="text-cyan-600">.ca</span></span>
-                    </div>
-                    <div className="hidden sm:flex items-center gap-4">
-                        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-[10px] text-slate-500 uppercase tracking-widest font-bold shadow-sm">
-                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                            System Online
+                        <div className="hidden sm:flex items-center gap-4">
+                            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-[10px] text-slate-500 uppercase tracking-widest font-bold shadow-sm">
+                                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                System Online
+                            </div>
                         </div>
                     </div>
-                </div>
-            </header>
+                </header>
+            )}
 
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 py-12 relative z-10">
+            <main className={`max-w-7xl mx-auto relative z-10 ${isEmbed ? 'p-4' : 'px-4 sm:px-6 py-12'}`}>
 
-                {/* Hero Section */}
-                <div className="text-center mb-16 max-w-4xl mx-auto">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-200 text-cyan-600 text-xs font-bold mb-6 shadow-sm">
-                        <Cpu size={14} />
-                        <span className="tracking-wide">ENGINEERING GROWTH SYSTEMS</span>
+                {/* Hero Section (Hidden in Embed) */}
+                {!isEmbed && (
+                    <div className="text-center mb-16 max-w-4xl mx-auto">
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-200 text-cyan-600 text-xs font-bold mb-6 shadow-sm">
+                            <Cpu size={14} />
+                            <span className="tracking-wide">ENGINEERING GROWTH SYSTEMS</span>
+                        </div>
+                        <h1 className="text-5xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight leading-tight">
+                            Simulate Your <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600">
+                                Revenue Potential
+                            </span>
+                        </h1>
+                        <p className="text-slate-600 text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed">
+                            Don't guess. Engineer it. Configure your automation stack below and visualize the mathematical impact of Frayze systems on your bottom line.
+                        </p>
                     </div>
-                    <h1 className="text-5xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight leading-tight">
-                        Simulate Your <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600">
-                            Revenue Potential
-                        </span>
-                    </h1>
-                    <p className="text-slate-600 text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed">
-                        Don't guess. Engineer it. Configure your automation stack below and visualize the mathematical impact of Frayze systems on your bottom line.
-                    </p>
-                </div>
+                )}
 
                 <div className="grid lg:grid-cols-12 gap-8 items-start">
 
@@ -752,24 +758,25 @@ const GrowthSimulator = () => {
                             />
                         </div>
 
-                        {/* 3. Terminal Log (Kept dark for contrast) */}
-                        <div className="bg-slate-900 rounded-lg border border-slate-800 p-4 font-mono text-[10px] h-32 overflow-hidden flex flex-col relative shadow-inner">
-                            <div className="absolute top-2 right-2 flex gap-1">
-                                <div className="w-2 h-2 rounded-full bg-slate-700"></div>
-                                <div className="w-2 h-2 rounded-full bg-slate-700"></div>
+                        {/* 3. Terminal Log (Hidden in Embed to save space) */}
+                        {!isEmbed && (
+                            <div className="bg-slate-900 rounded-lg border border-slate-800 p-4 font-mono text-[10px] h-32 overflow-hidden flex flex-col relative shadow-inner">
+                                <div className="absolute top-2 right-2 flex gap-1">
+                                    <div className="w-2 h-2 rounded-full bg-slate-700"></div>
+                                    <div className="w-2 h-2 rounded-full bg-slate-700"></div>
+                                </div>
+                                <div className="text-slate-500 mb-2 border-b border-slate-800 pb-1">user@frayze-sim:~/config$ tail -f system.log</div>
+                                <div className="flex-1 overflow-y-auto space-y-1 scrollbar-hide">
+                                    {terminalLogs.map((log) => (
+                                        <div key={log.id} className={`${log.type === 'success' ? 'text-emerald-400' : log.type === 'warning' ? 'text-amber-400' : 'text-slate-400'}`}>
+                                            <span className="opacity-50 mr-2">[{new Date(log.id.toString().includes('init') ? Date.now() : log.id).toLocaleTimeString().split(' ')[0]}]</span>
+                                            {log.text}
+                                        </div>
+                                    ))}
+                                    <div className="w-2 h-4 bg-slate-500 animate-pulse mt-1"></div>
+                                </div>
                             </div>
-                            <div className="text-slate-500 mb-2 border-b border-slate-800 pb-1">user@frayze-sim:~/config$ tail -f system.log</div>
-                            <div className="flex-1 overflow-y-auto space-y-1 scrollbar-hide">
-                                {terminalLogs.map((log) => (
-                                    <div key={log.id} className={`${log.type === 'success' ? 'text-emerald-400' : log.type === 'warning' ? 'text-amber-400' : 'text-slate-400'}`}>
-                                        <span className="opacity-50 mr-2">[{new Date(log.id.toString().includes('init') ? Date.now() : log.id).toLocaleTimeString().split(' ')[0]}]</span>
-                                        {log.text}
-                                    </div>
-                                ))}
-                                <div className="w-2 h-4 bg-slate-500 animate-pulse mt-1"></div>
-                            </div>
-                        </div>
-
+                        )}
                     </div>
 
                     {/* --- Right Column: Visualizer --- */}
