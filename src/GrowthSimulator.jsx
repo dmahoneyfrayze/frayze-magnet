@@ -74,7 +74,7 @@ const GrowthSimulator = ({ isEmbed = false }) => {
     // --- Gemini API Integration ---
 
     const callGeminiGrowthAnalysis = async (metrics, url, activeMods) => {
-        const apiKey = ""; // Injected by environment
+        const apiKey = import.meta.env.VITE_GEMINI_API_KEY || ""; // Injected by environment
         const systemPrompt = "You are a Senior Growth Engineer at Frayze.ca. Your job is to analyze business metrics and write a concise, high-impact Executive Summary for a PDF report. Focus on the 'Opportunity Cost' and how Frayze's automation (Chatbots, CRM, SEO) solves specific bottlenecks. Tone: Professional, Technical, Persuasive.";
 
         const userPrompt = `
