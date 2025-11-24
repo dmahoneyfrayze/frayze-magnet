@@ -419,6 +419,47 @@ const GrowthSimulator = ({ isEmbed = false }) => {
         const summary = await callGeminiGrowthAnalysis(metrics, formData.url, activeModules);
         setAiSummary(summary);
 
+        // --- Webhook Integration (GoHighLevel) ---
+        try {
+            const webhookUrl = "https://services.leadconnectorhq.com/hooks/9A5cW9ju0zoGXbGIDmyW/webhook-trigger/9861cc6b-dfdb-4fbb-b61f-52116d9d4927";
+
+            const payload = {
+                // Contact Info
+                ...formData,
+
+                // Inputs
+                monthly_traffic: inputs.monthlyTraffic,
+                conversion_rate: inputs.conversionRate,
+                lead_to_sale_rate: inputs.leadToSaleRate,
+                avg_deal_value: inputs.avgDealValue,
+
+                // Active Modules (Boolean)
+                module_chatbot: toggles.chatbot,
+                module_crm: toggles.crm,
+                module_seo: toggles.seo,
+                active_modules_list: activeModules,
+
+                // Results
+                base_revenue: baseRevenue,
+                new_revenue: newRevenue,
+                projected_annual_growth: annualGrowth,
+
+                // AI Content
+                ai_executive_summary: summary,
+                timestamp: new Date().toISOString()
+            };
+
+            // Fire and forget
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).catch(err => console.error("Webhook Error:", err));
+
+        } catch (err) {
+            console.error("Webhook Setup Error:", err);
+        }
+
         // Move to Success state, but DO NOT auto-download.
         // User must click the button in Step 2.
         setFormStep(2);
