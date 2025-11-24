@@ -24,87 +24,108 @@ import {
     Scan
 } from 'lucide-react';
 
-const IntroView = ({ onComplete }) => {
-    const [step, setStep] = useState(0);
+const ResultPreview = ({ onComplete }) => {
+    const [tickerValue, setTickerValue] = useState(124500);
 
+    // Auto-increment ticker
     useEffect(() => {
-        const timers = [
-            setTimeout(() => setStep(1), 800),  // Analyzing
-            setTimeout(() => setStep(2), 2200), // Calculating
-            setTimeout(() => setStep(3), 3500), // Done
-        ];
-        return () => timers.forEach(clearTimeout);
+        const interval = setInterval(() => {
+            setTickerValue(prev => prev + Math.floor(Math.random() * 100) + 50);
+        }, 50);
+        return () => clearInterval(interval);
     }, []);
 
     return (
-        <div className="fixed inset-0 z-50 bg-slate-900 flex flex-col items-center justify-center p-6 text-center">
+        <div className="fixed inset-0 z-50 bg-slate-900 flex flex-col items-center justify-center p-6 text-center overflow-hidden">
             {/* Background Effects */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-cyan-500/10 rounded-full blur-[120px]" />
-                <div className="absolute bottom-[-20%] right-[-10%] w-[70%] h-[70%] bg-purple-500/10 rounded-full blur-[120px]" />
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-cyan-500/10 rounded-full blur-[120px] animate-pulse" />
+                <div className="absolute bottom-[-20%] right-[-10%] w-[70%] h-[70%] bg-purple-500/10 rounded-full blur-[120px] animate-pulse" />
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05]" />
             </div>
 
-            <div className="relative z-10 max-w-md w-full">
-                {step < 3 ? (
-                    <div className="flex flex-col items-center gap-6">
-                        <div className="relative">
-                            <div className="w-24 h-24 rounded-full border-4 border-slate-800 flex items-center justify-center relative">
-                                <div className="absolute inset-0 rounded-full border-4 border-t-cyan-500 border-r-transparent border-b-transparent border-l-transparent animate-spin" />
-                                <Scan size={40} className="text-cyan-400 animate-pulse" />
-                            </div>
-                        </div>
-                        <div className="space-y-2">
-                            <h2 className="text-2xl font-bold text-white tracking-tight">
-                                {step === 0 && "Initializing System..."}
-                                {step === 1 && "Analyzing Traffic Patterns..."}
-                                {step === 2 && "Calculating Revenue Potential..."}
-                            </h2>
-                            <p className="text-slate-400 text-sm font-mono">
-                                {step === 0 && "Connecting to Frayze Core..."}
-                                {step === 1 && "Scanning industry benchmarks..."}
-                                {step === 2 && "Identifying growth bottlenecks..."}
-                            </p>
-                        </div>
-                        {/* Fake Progress Bar */}
-                        <div className="w-64 h-1 bg-slate-800 rounded-full overflow-hidden mt-4">
-                            <div
-                                className="h-full bg-gradient-to-r from-cyan-500 to-purple-500 transition-all duration-[1500ms] ease-out"
-                                style={{ width: step === 0 ? '10%' : step === 1 ? '60%' : '90%' }}
-                            />
-                        </div>
+            <div className="relative z-10 max-w-2xl w-full flex flex-col items-center">
+
+                {/* Header */}
+                <div className="mb-8 animate-in fade-in slide-in-from-top-8 duration-700">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-900/30 border border-cyan-500/30 text-cyan-400 text-xs font-bold mb-4 uppercase tracking-widest">
+                        <Sparkles size={12} />
+                        Live Opportunity Detected
                     </div>
-                ) : (
-                    <div className="flex flex-col items-center gap-8 animate-in fade-in zoom-in duration-500">
-                        <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center ring-4 ring-emerald-500/10 mb-2">
-                            <Zap size={40} className="text-emerald-400 fill-emerald-400" />
-                        </div>
+                    <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight mb-2">
+                        Unlock Your <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">
+                            Revenue Potential
+                        </span>
+                    </h1>
+                </div>
 
-                        <div>
-                            <h2 className="text-4xl font-black text-white mb-2 tracking-tight">
-                                Analysis Complete
-                            </h2>
-                            <p className="text-slate-300 text-lg">
-                                We've detected significant <br />
-                                <span className="text-emerald-400 font-bold">untapped revenue potential.</span>
-                            </p>
-                        </div>
-
-                        <button
-                            onClick={onComplete}
-                            className="group relative px-8 py-4 bg-white text-slate-900 rounded-full font-bold text-lg shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] hover:scale-105 transition-all duration-300"
-                        >
-                            <span className="flex items-center gap-2">
-                                Launch Simulator
-                                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                            </span>
-                        </button>
-
-                        <p className="text-slate-500 text-xs mt-4">
-                            Powered by Frayze Intelligence Engine
-                        </p>
+                {/* Live Ticker Card */}
+                <div className="bg-slate-800/50 backdrop-blur-md border border-slate-700 p-8 rounded-3xl shadow-2xl mb-8 w-full max-w-lg transform hover:scale-105 transition-transform duration-500">
+                    <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">Potential Annual Impact</p>
+                    <div className="text-5xl md:text-6xl font-mono font-black text-emerald-400 tracking-tighter flex justify-center items-center gap-2">
+                        <span className="text-emerald-600/50">$</span>
+                        {tickerValue.toLocaleString()}
                     </div>
-                )}
+
+                    {/* Mini Graph Visualization */}
+                    <div className="h-24 mt-6 relative overflow-hidden rounded-lg bg-slate-900/50 border border-slate-800/50">
+                        <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+                            <path
+                                d="M0,100 Q50,90 100,60 T200,20"
+                                fill="none"
+                                stroke="#34d399"
+                                strokeWidth="3"
+                                className="drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]"
+                            >
+                                <animate attributeName="d" dur="3s" repeatCount="indefinite"
+                                    values="M0,100 Q50,90 100,60 T200,20; M0,100 Q50,80 100,50 T200,10; M0,100 Q50,90 100,60 T200,20"
+                                />
+                            </path>
+                            <path
+                                d="M0,100 Q50,90 100,60 T200,20 L200,100 L0,100 Z"
+                                fill="url(#grad)"
+                                opacity="0.2"
+                            >
+                                <animate attributeName="d" dur="3s" repeatCount="indefinite"
+                                    values="M0,100 Q50,90 100,60 T200,20 L200,100 L0,100 Z; M0,100 Q50,80 100,50 T200,10 L200,100 L0,100 Z; M0,100 Q50,90 100,60 T200,20 L200,100 L0,100 Z"
+                                />
+                            </path>
+                            <defs>
+                                <linearGradient id="grad" x1="0" x2="0" y1="0" y2="1">
+                                    <stop offset="0%" stopColor="#34d399" />
+                                    <stop offset="100%" stopColor="transparent" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+
+                {/* CTA Button */}
+                <button
+                    onClick={onComplete}
+                    className="group relative px-8 py-4 bg-white hover:bg-cyan-50 text-slate-900 rounded-full font-bold text-lg shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] hover:scale-105 transition-all duration-300 animate-bounce-subtle"
+                >
+                    <span className="flex items-center gap-2">
+                        Calculate YOUR Numbers
+                        <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                    </span>
+                </button>
+
+                <p className="text-slate-500 text-xs mt-6 max-w-xs leading-relaxed">
+                    See exactly how much Frayze automation can add to your bottom line in 30 seconds.
+                </p>
             </div>
+
+            <style>{`
+                @keyframes bounce-subtle {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(-5px); }
+                }
+                .animate-bounce-subtle {
+                    animation: bounce-subtle 2s infinite ease-in-out;
+                }
+            `}</style>
         </div>
     );
 };
@@ -707,7 +728,7 @@ const GrowthSimulator = ({ isEmbed = false }) => {
     };
 
     if (showIntro) {
-        return <IntroView onComplete={() => setShowIntro(false)} />;
+        return <ResultPreview onComplete={() => setShowIntro(false)} />;
     }
 
     return (
