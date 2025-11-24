@@ -20,11 +20,98 @@ import {
     Target,
     Sparkles,
     FileText,
-    HelpCircle
+    HelpCircle,
+    Scan
 } from 'lucide-react';
+
+const IntroView = ({ onComplete }) => {
+    const [step, setStep] = useState(0);
+
+    useEffect(() => {
+        const timers = [
+            setTimeout(() => setStep(1), 800),  // Analyzing
+            setTimeout(() => setStep(2), 2200), // Calculating
+            setTimeout(() => setStep(3), 3500), // Done
+        ];
+        return () => timers.forEach(clearTimeout);
+    }, []);
+
+    return (
+        <div className="fixed inset-0 z-50 bg-slate-900 flex flex-col items-center justify-center p-6 text-center">
+            {/* Background Effects */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-cyan-500/10 rounded-full blur-[120px]" />
+                <div className="absolute bottom-[-20%] right-[-10%] w-[70%] h-[70%] bg-purple-500/10 rounded-full blur-[120px]" />
+            </div>
+
+            <div className="relative z-10 max-w-md w-full">
+                {step < 3 ? (
+                    <div className="flex flex-col items-center gap-6">
+                        <div className="relative">
+                            <div className="w-24 h-24 rounded-full border-4 border-slate-800 flex items-center justify-center relative">
+                                <div className="absolute inset-0 rounded-full border-4 border-t-cyan-500 border-r-transparent border-b-transparent border-l-transparent animate-spin" />
+                                <Scan size={40} className="text-cyan-400 animate-pulse" />
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <h2 className="text-2xl font-bold text-white tracking-tight">
+                                {step === 0 && "Initializing System..."}
+                                {step === 1 && "Analyzing Traffic Patterns..."}
+                                {step === 2 && "Calculating Revenue Potential..."}
+                            </h2>
+                            <p className="text-slate-400 text-sm font-mono">
+                                {step === 0 && "Connecting to Frayze Core..."}
+                                {step === 1 && "Scanning industry benchmarks..."}
+                                {step === 2 && "Identifying growth bottlenecks..."}
+                            </p>
+                        </div>
+                        {/* Fake Progress Bar */}
+                        <div className="w-64 h-1 bg-slate-800 rounded-full overflow-hidden mt-4">
+                            <div
+                                className="h-full bg-gradient-to-r from-cyan-500 to-purple-500 transition-all duration-[1500ms] ease-out"
+                                style={{ width: step === 0 ? '10%' : step === 1 ? '60%' : '90%' }}
+                            />
+                        </div>
+                    </div>
+                ) : (
+                    <div className="flex flex-col items-center gap-8 animate-in fade-in zoom-in duration-500">
+                        <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center ring-4 ring-emerald-500/10 mb-2">
+                            <Zap size={40} className="text-emerald-400 fill-emerald-400" />
+                        </div>
+
+                        <div>
+                            <h2 className="text-4xl font-black text-white mb-2 tracking-tight">
+                                Analysis Complete
+                            </h2>
+                            <p className="text-slate-300 text-lg">
+                                We've detected significant <br />
+                                <span className="text-emerald-400 font-bold">untapped revenue potential.</span>
+                            </p>
+                        </div>
+
+                        <button
+                            onClick={onComplete}
+                            className="group relative px-8 py-4 bg-white text-slate-900 rounded-full font-bold text-lg shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] hover:scale-105 transition-all duration-300"
+                        >
+                            <span className="flex items-center gap-2">
+                                Launch Simulator
+                                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                            </span>
+                        </button>
+
+                        <p className="text-slate-500 text-xs mt-4">
+                            Powered by Frayze Intelligence Engine
+                        </p>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+};
 
 const GrowthSimulator = ({ isEmbed = false }) => {
     // --- State ---
+    const [showIntro, setShowIntro] = useState(true);
     const [inputs, setInputs] = useState({
         monthlyTraffic: 1000,
         conversionRate: 2.0,     // Traffic to Lead
@@ -618,6 +705,10 @@ const GrowthSimulator = ({ isEmbed = false }) => {
             </div>
         );
     };
+
+    if (showIntro) {
+        return <IntroView onComplete={() => setShowIntro(false)} />;
+    }
 
     return (
         <div className={`min-h-screen font-sans selection:bg-cyan-100 overflow-x-hidden relative ${isEmbed ? 'bg-transparent' : 'bg-slate-50'}`}>
