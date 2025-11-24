@@ -148,7 +148,7 @@ const GrowthSimulator = ({ isEmbed = false }) => {
 
     const [showLeadForm, setShowLeadForm] = useState(false);
     const [formStep, setFormStep] = useState(0); // 0: input, 1: processing, 2: success
-    const [formData, setFormData] = useState({ url: '', email: '', phone: '' });
+    const [formData, setFormData] = useState({ businessName: '', url: '', email: '', phone: '' });
     const [aiSummary, setAiSummary] = useState(""); // Store the summary to use in the manual download
 
     const [terminalLogs, setTerminalLogs] = useState([
@@ -187,6 +187,7 @@ const GrowthSimulator = ({ isEmbed = false }) => {
 
         const userPrompt = `
       Analyze this business:
+      Business Name: ${formData.businessName}
       Website: ${url || 'Not provided'}
       Current Traffic: ${metrics.traffic}/mo
       Current Conversion: ${metrics.conversion}%
@@ -299,7 +300,7 @@ const GrowthSimulator = ({ isEmbed = false }) => {
         </div>
 
         <h1>System Blueprint</h1>
-        <p style="color: #64748b;">Prepared for: <span style="color:#0f172a; font-weight:bold;">${formData.url}</span> | Date: ${new Date().toLocaleDateString()}</p>
+        <p style="color: #64748b;">Prepared for: <span style="color:#0f172a; font-weight:bold;">${formData.businessName || formData.url}</span> | Date: ${new Date().toLocaleDateString()}</p>
 
         <div class="growth-box">
             <div class="growth-title">Total Revenue Opportunity</div>
@@ -425,7 +426,10 @@ const GrowthSimulator = ({ isEmbed = false }) => {
 
             const payload = {
                 // Contact Info
-                ...formData,
+                business_name: formData.businessName,
+                website_url: formData.url || 'Not Provided',
+                email: formData.email,
+                phone: formData.phone,
 
                 // Inputs
                 monthly_traffic: inputs.monthlyTraffic,
@@ -1036,10 +1040,21 @@ const GrowthSimulator = ({ isEmbed = false }) => {
 
                                 <form onSubmit={handleFormSubmit}>
                                     <div className="space-y-4 mb-6">
+                                        {/* NEW: Business Name Input */}
                                         <div className="group">
-                                            <label className="block text-[10px] font-bold text-slate-400 mb-1 uppercase tracking-wider group-focus-within:text-cyan-600 transition-colors">Website URL</label>
+                                            <label className="block text-[10px] font-bold text-slate-400 mb-1 uppercase tracking-wider group-focus-within:text-cyan-600 transition-colors">Business Name</label>
                                             <input
                                                 required
+                                                type="text"
+                                                placeholder="Acme Corp"
+                                                value={formData.businessName}
+                                                onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
+                                                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:bg-white transition-all"
+                                            />
+                                        </div>
+                                        <div className="group">
+                                            <label className="block text-[10px] font-bold text-slate-400 mb-1 uppercase tracking-wider group-focus-within:text-cyan-600 transition-colors">Website URL <span className="text-slate-300 font-normal normal-case">(Optional)</span></label>
+                                            <input
                                                 type="url"
                                                 placeholder="https://yourbusiness.ca"
                                                 value={formData.url}
