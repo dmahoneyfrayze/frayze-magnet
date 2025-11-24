@@ -708,7 +708,7 @@ const GrowthSimulator = ({ isEmbed = false }) => {
         if (score >= 70) { colorClass = 'text-emerald-500'; borderClass = 'border-emerald-100'; }
 
         return (
-            <div className="absolute top-6 right-6 flex flex-col items-center z-20 bg-white/50 backdrop-blur-sm p-2 rounded-2xl border border-slate-100 shadow-sm">
+            <div className="relative md:absolute md:top-6 md:right-6 flex flex-col items-center z-20 bg-white/50 backdrop-blur-sm p-2 rounded-2xl border border-slate-100 shadow-sm mb-4 md:mb-0 self-start md:self-auto">
                 <div className={`relative w-14 h-14 flex items-center justify-center rounded-full border-4 ${borderClass}`}>
                     <svg className="absolute inset-0 w-full h-full -rotate-90 transform" viewBox="0 0 36 36">
                         <path
