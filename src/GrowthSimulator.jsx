@@ -21,7 +21,8 @@ import {
     Sparkles,
     FileText,
     HelpCircle,
-    Scan
+    Scan,
+    Calendar
 } from 'lucide-react';
 
 const ResultPreview = ({ onComplete }) => {
@@ -1131,6 +1132,17 @@ const GrowthSimulator = ({ isEmbed = false }) => {
                                     <FileText size={18} className="text-cyan-300" />
                                     Download Your Blueprint
                                 </button>
+
+                                {/* NEW: Schedule Call CTA */}
+                                <a
+                                    href="https://frayze.ca/book-consultation/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full bg-white border-2 border-slate-200 hover:border-cyan-500 text-slate-700 hover:text-cyan-600 font-bold py-3.5 rounded-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 mb-4 group"
+                                >
+                                    <Calendar size={18} className="text-slate-400 group-hover:text-cyan-500 transition-colors" />
+                                    Schedule Strategy Call
+                                </a>
 
                                 {/* Helper message for blocked downloads */}
                                 <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4 text-left text-xs text-amber-800 flex gap-2">
