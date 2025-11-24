@@ -773,7 +773,7 @@ const GrowthSimulator = ({ isEmbed = false }) => {
         if (score >= 70) { colorClass = 'text-emerald-500'; borderClass = 'border-emerald-100'; }
 
         return (
-            <div className="relative md:absolute md:top-6 md:right-6 flex flex-col items-center z-20 bg-white/50 backdrop-blur-sm p-2 rounded-2xl border border-slate-100 shadow-sm mb-4 md:mb-0 self-start md:self-auto">
+            <div className="flex flex-col items-center z-20 bg-white/50 backdrop-blur-sm p-2 rounded-2xl border border-slate-100 shadow-sm mb-4 md:mb-0">
                 <div className={`relative w-14 h-14 flex items-center justify-center rounded-full border-4 ${borderClass}`}>
                     <svg className="absolute inset-0 w-full h-full -rotate-90 transform" viewBox="0 0 36 36">
                         <path
@@ -965,14 +965,15 @@ const GrowthSimulator = ({ isEmbed = false }) => {
                         {/* Main Dashboard Card */}
                         <div className="flex-1 bg-white rounded-3xl border border-slate-200 p-4 md:p-8 shadow-xl relative overflow-hidden flex flex-col">
 
-                            {/* NEW: Growth Score Gauge */}
-                            <GrowthScoreGauge toggles={toggles} />
-
-                            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 border-b border-slate-100 pb-6">
+                            <div className="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-slate-100 pb-6 gap-4">
                                 <div>
                                     <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-1">Projected Annual Impact</h3>
                                     <p className="text-sm text-slate-500">Based on system configuration</p>
                                 </div>
+
+                                {/* Growth Score Gauge */}
+                                <GrowthScoreGauge toggles={toggles} />
+
                                 <div className="mt-4 md:mt-0 text-right">
                                     <p className="text-xs uppercase tracking-widest text-slate-400 font-bold mb-1">Additional Annual Revenue</p>
                                     <div className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-cyan-600">
